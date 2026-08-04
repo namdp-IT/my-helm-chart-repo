@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-system-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/namdp-it/my-helm-chart-repo.git'
+    targetRevision: HEAD
+    path: apps # <--- Chỉ định ArgoCD quét tất cả file YAML trong thư mục apps/
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

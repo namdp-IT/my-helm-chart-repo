@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-db
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/namdp-it/my-helm-chart-repo.git'
+    targetRevision: HEAD
+    path: my-app-chart
+    helm:
+      values: |
+        image:
+          repository: postgres
+          tag: "15-alpine"
+        service:
+          port: 5432
+          targetPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: "taskdb"
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "secret123"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: task-app
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [ CreateNamespace=true ]

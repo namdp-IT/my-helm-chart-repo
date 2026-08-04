@@ -1,5 +1,4 @@
 apiVersion: v2
-name: my-app-chart
-description: Helm chart cho ứng dụng test ArgoCD
+name: microservice-chart
 version: 0.1.0
 appVersion: "1.0.0"

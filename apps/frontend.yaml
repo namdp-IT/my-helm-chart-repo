@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-frontend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/namdp-it/my-helm-chart-repo.git'
+    targetRevision: HEAD
+    path: my-app-chart
+    helm:
+      values: |
+        replicaCount: 2
+        image:
+          repository: ghcr.io/namdp-it/task-frontend
+          tag: "v1.0.0"
+        service:
+          port: 80
+          targetPort: 80
+        ingress:
+          enabled: true
+          host: "task.local" # Domain truy cập ứng dụng
+        env:
+          - name: BACKEND_URL
+            value: "http://task-backend:8080"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: task-app
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

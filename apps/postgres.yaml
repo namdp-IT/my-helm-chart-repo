@@ -17,6 +17,8 @@ spec:
         service:
           port: 5432
           targetPort: 5432
+        ingress:
+          enabled: false
         env:
           - name: POSTGRES_DB
             value: "taskdb"

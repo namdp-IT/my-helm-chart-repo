@@ -1,0 +1,11 @@
+replicaCount: 2
+
+image:
+  repository: /my-app
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
